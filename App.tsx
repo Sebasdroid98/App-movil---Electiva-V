@@ -1,26 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Button from './src/components/Button';
-import HomeScreen from './screens/HomeScreen';
+// App.tsx
+import 'react-native-gesture-handler'; // Importante para React Navigation Stack
 
-export default function App() {
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+// Importa tus componentes de pantalla
+import HomeScreen from './HomeScreen'; // Asegúrate que la ruta sea correcta
+// Asume que tienes otra pantalla que será el "Inicio" inicial al que quieres volver
+import InitialScreen from './InitialScreen'; // ¡Crea este archivo!
+
+// --- 1. Definir el Tipo de Parámetros (para TypeScript) ---
+// Esto es lo que usa TypeScript para asegurar que las rutas sean correctas.
+export type RootStackParamList = {
+  InitialScreen: undefined; // La pantalla que carga primero o a la que quieres volver
+  Home: undefined; // Tu pantalla de "Mi Finanza"
+  Settings: undefined;
+  // Agrega aquí todas tus otras pantallas
+};
+
+// --- 2. Crear el Stack Navigator ---
+const Stack = createStackNavigator<RootStackParamList>();
+
+// --- 3. El Componente Principal App ---
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Bienvenido a tu app de gestión de presupuesto</Text>
-      <Button label="Botón nuevo" backgroundColor="#ff0000" />
-      <Button label="Botón nuevo x2" backgroundColor="#00ff00" />
-      <Button label="Botón nuevo x4" backgroundColor="#0000ff" />
-      <HomeScreen />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator 
+        // Opcional: Oculta la barra de encabezado predeterminada de React Navigation
+        screenOptions={{ headerShown: false }}
+      >
+        {/* Define la primera pantalla que se cargará */}
+        <Stack.Screen 
+          name="InitialScreen" 
+          component={InitialScreen} 
+        />
+        
+        {/* Define tu pantalla "Mi Finanza" */}
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+        />
+        
+        {/* Puedes añadir otras pantallas aquí... */}
+        
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
