@@ -1,140 +1,69 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
-import { login } from '../services/authService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useForm } from '../hooks/useForm';
+import { AppContext } from '../context/AppContext';
 
-export default function LoginScreen({ navigation }: any) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function LoginScreen() {
+  const { values, handleChange } = useForm({ email: '', password: '' });
+  const { login } = useContext(AppContext);
 
-  async function handleLogin() {
-    setError(null);
-    if (!email || !password) {
-      setError('Por favor llena todos los campos');
-      return;
-    }
+  useEffect(() => {
+    console.log('Pantalla Login cargada');
+  }, []);
 
-    setLoading(true);
-    try {
-      const result = await login({ email, password });
-      await AsyncStorage.setItem('token', result.token);
-      navigation.replace('Home');
-    } catch (e: any) {
-      setError(e.message || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
+  function handleLogin() {
+    if (values.password === '123456') {
+      login(values.email);
+    } else {
+      alert('Contraseña incorrecta (usa 123456)');
     }
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <View style={styles.header}>
-        <Text style={styles.appName}>MI-FINANZA</Text>
-        <Text style={styles.subtitle}>Gestiona tus ingresos y egresos fácilmente</Text>
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>MI-FINANZA</Text>
+      <Text style={styles.subtitle}>Controla tus ingresos y egresos</Text>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Iniciar Sesión</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Correo"
+        value={values.email}
+        onChangeText={(text) => handleChange('email', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={values.password}
+        onChangeText={(text) => handleChange('password', text)}
+      />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
-          placeholderTextColor="#aaa"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          placeholderTextColor="#aaa"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-
-        {error && <Text style={styles.error}>{error}</Text>}
-
-        {loading ? (
-          <ActivityIndicator color="#2e86de" />
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Ingresar</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </KeyboardAvoidingView>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Ingresar</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#eaf4fc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  header: {
-    marginBottom: 30,
-    alignItems: 'center',
-  },
-  appName: {
-    fontSize: 34,
-    fontWeight: 'bold',
-    color: '#2e86de',
-    letterSpacing: 1,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 25,
-    width: '100%',
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2e86de',
-    marginBottom: 15,
-    textAlign: 'center',
-  },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#eaf4fc', padding: 20 },
+  title: { fontSize: 34, fontWeight: 'bold', color: '#2e86de' },
+  subtitle: { fontSize: 14, color: '#555', marginBottom: 30 },
   input: {
+    width: '100%',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#ccc',
     borderRadius: 10,
     padding: 10,
-    marginBottom: 12,
-    backgroundColor: '#fafafa',
+    marginBottom: 10,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: '#2e86de',
-    padding: 12,
     borderRadius: 10,
+    padding: 12,
+    width: '100%',
     alignItems: 'center',
-    marginTop: 5,
   },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  error: {
-    color: '#c0392b',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
+  buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 });
