@@ -1,5 +1,4 @@
-// src/screens/HomeScreen.tsx
-import React from 'react';
+import React from 'react'
 import { 
   View, 
   Text, 
@@ -8,23 +7,16 @@ import {
   StatusBar,
   ScrollView, // Usamos ScrollView para permitir el desplazamiento si hay mucho contenido
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import { StackScreenProps } from '@react-navigation/stack'; 
+import FeaturesScreen from './FeaturesScreen';
+import InitialScreen from './InitialScreen';
 
-import { RootStackParamList } from '../../App'; 
-// Si tenías una imagen de perfil, la mantendríamos opcionalmente o la reemplazaríamos con un ícono.
-// const profileImage = require('../../assets/hom.png'); 
 
-type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
-
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-    
-  const handleGoBack = () => {
-    navigation.goBack(); 
-  };
+const HomeScreen = () => {
+  // const handleGoBack = () => {
+  //   navigation.goBack(); 
+  // };
 
   const handleSettings = () => {
-    // Aquí puedes navegar a la pantalla de Ajustes
     console.log('Navegar a ajustes');
   };
 
@@ -33,26 +25,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     console.log('Añadir nueva transacción');
   };
     
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { AppContext } from '../context/AppContext';
-import PieChart from '../components/PieChart';
-
-export default function HomeScreen() {
-  const { user, logout } = useContext(AppContext);
-
   return (
     <View style={styles.container}>
-      {/* Barra de estado con contenido oscuro sobre fondo claro */}
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" /> 
 
-      {/* --- 1. Encabezado Sencillo y Funcional --- */}
       <View style={styles.header}>
         <TouchableOpacity 
           style={styles.headerIconLeft}
-          onPress={handleGoBack}
         >
-          <Icon name="chevron-left" size={28} color="#333" /> 
         </TouchableOpacity>
         
         <Text style={styles.headerTitle}>Mi Finanza</Text>
@@ -61,32 +41,29 @@ export default function HomeScreen() {
           style={styles.headerIconRight}
           onPress={handleSettings}
         >
-          <Icon name="settings" size={24} color="#333" />
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.scrollViewContent}>
-        {/* --- 2. Tarjeta de Balance General --- */}
+
+        <InitialScreen />
+
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Balance Actual</Text>
           <Text style={styles.balanceAmount}>$ 1,250.75</Text>
           <View style={styles.balanceDetails}>
             <View style={styles.balanceItem}>
-              <Icon name="arrow-up-circle" size={20} color="#2ECC71" />
               <Text style={styles.balanceItemText}>Ingresos: $1,500.00</Text>
             </View>
             <View style={styles.balanceItem}>
-              <Icon name="arrow-down-circle" size={20} color="#E74C3C" />
               <Text style={styles.balanceItemText}>Egresos: $249.25</Text>
             </View>
           </View>
         </View>
 
-        {/* --- 3. Sección de Últimas Transacciones (Ejemplo) --- */}
         <Text style={styles.sectionTitle}>Últimas Transacciones</Text>
         <View style={styles.transactionsContainer}>
           <View style={styles.transactionItem}>
-            <Icon name="shopping-cart" size={20} color="#666" style={styles.transactionIcon} />
             <View style={styles.transactionDetails}>
               <Text style={styles.transactionName}>Compras Supermercado</Text>
               <Text style={styles.transactionCategory}>Alimentos</Text>
@@ -94,45 +71,40 @@ export default function HomeScreen() {
             <Text style={styles.transactionAmount}>- $85.50</Text>
           </View>
           <View style={styles.transactionItem}>
-            <Icon name="dollar-sign" size={20} color="#666" style={styles.transactionIcon} />
             <View style={styles.transactionDetails}>
               <Text style={styles.transactionName}>Salario Mensual</Text>
               <Text style={styles.transactionCategory}>Ingreso</Text>
             </View>
             <Text style={[styles.transactionAmount, { color: '#2ECC71' }]}>+ $1200.00</Text>
           </View>
-          {/* Más transacciones aquí */}
         </View>
 
-        {/* --- 4. Sección de Acciones Rápidas (Iconos más grandes y claros) --- */}
         <Text style={styles.sectionTitle}>Acciones Rápidas</Text>
         <View style={styles.quickActionsGrid}>
           <TouchableOpacity style={styles.quickActionItem}>
-            <Icon name="edit" size={30} color="#2e86de" />
             <Text style={styles.quickActionText}>Registrar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.quickActionItem}>
-            <Icon name="trending-up" size={30} color="#2e86de" />
             <Text style={styles.quickActionText}>Reportes</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.quickActionItem}>
-            <Icon name="target" size={30} color="#2e86de" />
             <Text style={styles.quickActionText}>Presupuesto</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.quickActionItem}>
-            <Icon name="credit-card" size={30} color="#2e86de" />
             <Text style={styles.quickActionText}>Tarjetas</Text>
           </TouchableOpacity>
         </View>
+
+        <FeaturesScreen/>
       </ScrollView>
 
-      {/* --- 5. Botón Flotante (FAB) para añadir --- */}
       <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
-        <Icon name="plus" size={30} color="#FFFFFF" />
       </TouchableOpacity>
     </View>
   );
-};
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -176,6 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
     padding: 25,
+    marginTop: 100,
     marginBottom: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -239,23 +212,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#F7F9FC',
   },
-  transactionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F7F9FC',
-  },
-  transactionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F7F9FC',
-    // Remove last item border for cleaner look
-    lastChild: {
-        borderBottomWidth: 0,
-    },
+  lastChild: {
+      borderBottomWidth: 0,
   },
   transactionIcon: {
     marginRight: 15,
