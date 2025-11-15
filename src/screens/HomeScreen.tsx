@@ -1,251 +1,300 @@
+// src/screens/HomeScreen.tsx
 import React from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
-  Image, 
   TouchableOpacity, 
-  StatusBar 
+  StatusBar,
+  ScrollView, // Usamos ScrollView para permitir el desplazamiento si hay mucho contenido
 } from 'react-native';
-// Importamos los iconos
 import Icon from 'react-native-vector-icons/Feather';
-
-// --- IMPORTACIONES DE NAVEGACIÓN (Añadidas) ---
 import { StackScreenProps } from '@react-navigation/stack'; 
-// Define la estructura de tu stack de navegación (debe coincidir con App.tsx)
-type RootStackParamList = {
-    Home: undefined; 
-    InitialScreen: undefined; 
-    Settings: undefined;
-};
+
+import { RootStackParamList } from '../../App'; 
+// Si tenías una imagen de perfil, la mantendríamos opcionalmente o la reemplazaríamos con un ícono.
+// const profileImage = require('../../assets/hom.png'); 
+
 type HomeScreenProps = StackScreenProps<RootStackParamList, 'Home'>;
-// ----------------------------------------------
 
-
-// --- RUTA DE IMAGEN CORREGIDA ---
-const profileImage = require('../../assets/hom.png');
-
-// Aceptamos la prop `navigation`
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     
-  // Función para manejar el "botón de volver"
   const handleGoBack = () => {
-    // Vuelve a la pantalla anterior en el stack
     navigation.goBack(); 
+  };
+
+  const handleSettings = () => {
+    // Aquí puedes navegar a la pantalla de Ajustes
+    console.log('Navegar a ajustes');
+  };
+
+  const handleAddTransaction = () => {
+    // Aquí la lógica para añadir un nuevo ingreso/egreso
+    console.log('Añadir nueva transacción');
   };
     
   return (
     <View style={styles.container}>
-      {/* Barra de estado blanca para que el texto resalte sobre el fondo rojo */}
-      <StatusBar barStyle="light-content" backgroundColor="#B71C1C" /> 
+      {/* Barra de estado con contenido oscuro sobre fondo claro */}
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" /> 
 
-      {/* --- 1. Encabezado Curvo (Rojo Vivo) --- */}
+      {/* --- 1. Encabezado Sencillo y Funcional --- */}
       <View style={styles.header}>
-        {/* Botón de VOLVER/RETROCESO */}
         <TouchableOpacity 
-          style={styles.backButton}
+          style={styles.headerIconLeft}
           onPress={handleGoBack}
         >
-          <Icon name="arrow-left" size={26} color="#ffffff" /> 
+          <Icon name="chevron-left" size={28} color="#333" /> 
         </TouchableOpacity>
         
-        {/* Botón de AJUSTES */}
-        <TouchableOpacity style={styles.settingsButton}>
-          <Icon name="settings" size={26} color="#ffffff" />
-        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Mi Finanza</Text>
 
-        {/* --- Saludo y título --- */}
-        <View style={styles.headerContent}>
-          <Text style={styles.greetingText}>Hola, Usuario</Text>
-          <Text style={styles.headerTitle}>Mi Finanza</Text>
-        </View>
+        <TouchableOpacity 
+          style={styles.headerIconRight}
+          onPress={handleSettings}
+        >
+          <Icon name="settings" size={24} color="#333" />
+        </TouchableOpacity>
       </View>
 
-      {/* --- 2. Imagen de Perfil (Con Borde Elegante) --- */}
-      <Image source={profileImage} style={styles.profileImage} />
-
-      {/* --- 3. Contenido Principal: Tarjeta de Balance --- */}
-      <View style={styles.content}>
-        
+      <ScrollView style={styles.scrollViewContent}>
+        {/* --- 2. Tarjeta de Balance General --- */}
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Balance Actual</Text>
-          <Text style={styles.balanceAmount}>$1,250.75</Text>
-        </View>
-
-        {/* --- 4. Botón Principal de Acción (Verde Esmeralda) --- */}
-        <TouchableOpacity style={styles.mainButton}>
-          <Text style={styles.mainButtonText}>Control de Ingresos y Egresos</Text>
-        </TouchableOpacity>
-
-        {/* --- 5. Sección de Acciones Rápidas --- */}
-        <View style={styles.quickActionsContainer}>
-          <Text style={styles.quickActionsTitle}>Acciones Rápidas</Text>
-          
-          <View style={styles.quickActionsRow}>
-            {/* Opción 1: Reporte */}
-            <TouchableOpacity style={styles.actionItem}>
-              <Icon name="file-text" size={24} color="#333" />
-              <Text style={styles.actionItemText}>Reporte</Text>
-            </TouchableOpacity>
-            
-            {/* Opción 2: Transferir */}
-            <TouchableOpacity style={styles.actionItem}>
-              <Icon name="repeat" size={24} color="#333" />
-              <Text style={styles.actionItemText}>Transferir</Text>
-            </TouchableOpacity>
-            
-            {/* Opción 3: Presupuesto */}
-            <TouchableOpacity style={styles.actionItem}>
-              <Icon name="pie-chart" size={24} color="#333" />
-              <Text style={styles.actionItemText}>Presupuesto</Text>
-            </TouchableOpacity>
+          <Text style={styles.balanceAmount}>$ 1,250.75</Text>
+          <View style={styles.balanceDetails}>
+            <View style={styles.balanceItem}>
+              <Icon name="arrow-up-circle" size={20} color="#2ECC71" />
+              <Text style={styles.balanceItemText}>Ingresos: $1,500.00</Text>
+            </View>
+            <View style={styles.balanceItem}>
+              <Icon name="arrow-down-circle" size={20} color="#E74C3C" />
+              <Text style={styles.balanceItemText}>Egresos: $249.25</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* --- 6. Botón Flotante (FAB) '+' (para añadir transacción) --- */}
-      <TouchableOpacity style={styles.fab}>
-        <Icon name="plus" size={28} color="#ffffff" />
+        {/* --- 3. Sección de Últimas Transacciones (Ejemplo) --- */}
+        <Text style={styles.sectionTitle}>Últimas Transacciones</Text>
+        <View style={styles.transactionsContainer}>
+          <View style={styles.transactionItem}>
+            <Icon name="shopping-cart" size={20} color="#666" style={styles.transactionIcon} />
+            <View style={styles.transactionDetails}>
+              <Text style={styles.transactionName}>Compras Supermercado</Text>
+              <Text style={styles.transactionCategory}>Alimentos</Text>
+            </View>
+            <Text style={styles.transactionAmount}>- $85.50</Text>
+          </View>
+          <View style={styles.transactionItem}>
+            <Icon name="dollar-sign" size={20} color="#666" style={styles.transactionIcon} />
+            <View style={styles.transactionDetails}>
+              <Text style={styles.transactionName}>Salario Mensual</Text>
+              <Text style={styles.transactionCategory}>Ingreso</Text>
+            </View>
+            <Text style={[styles.transactionAmount, { color: '#2ECC71' }]}>+ $1200.00</Text>
+          </View>
+          {/* Más transacciones aquí */}
+        </View>
+
+        {/* --- 4. Sección de Acciones Rápidas (Iconos más grandes y claros) --- */}
+        <Text style={styles.sectionTitle}>Acciones Rápidas</Text>
+        <View style={styles.quickActionsGrid}>
+          <TouchableOpacity style={styles.quickActionItem}>
+            <Icon name="edit" size={30} color="#2e86de" />
+            <Text style={styles.quickActionText}>Registrar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.quickActionItem}>
+            <Icon name="trending-up" size={30} color="#2e86de" />
+            <Text style={styles.quickActionText}>Reportes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.quickActionItem}>
+            <Icon name="target" size={30} color="#2e86de" />
+            <Text style={styles.quickActionText}>Presupuesto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.quickActionItem}>
+            <Icon name="credit-card" size={30} color="#2e86de" />
+            <Text style={styles.quickActionText}>Tarjetas</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+      {/* --- 5. Botón Flotante (FAB) para añadir --- */}
+      <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
+        <Icon name="plus" size={30} color="#FFFFFF" />
       </TouchableOpacity>
     </View>
   );
 };
 
-// --- Hoja de Estilos Rediseñada ---
 const styles = StyleSheet.create({
-  // Colores Base: Rojo Oscuro (#B71C1C), Esmeralda (#10B981), Gris Suave (#F5F5F5)
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5', // Fondo muy suave
+    backgroundColor: '#F7F9FC', // Un blanco muy suave, casi gris claro
   },
   header: {
-    backgroundColor: '#B71C1C', // Rojo Oscuro
-    height: 250, 
-    borderBottomLeftRadius: 60, 
-    borderBottomRightRadius: 60, 
-    paddingTop: 40,
-  },
-  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
+    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingBottom: 15,
+    backgroundColor: '#FFFFFF', // Fondo blanco para el encabezado
+    borderBottomWidth: 1,
+    borderBottomColor: '#ECEFF1', // Borde sutil
+    shadowColor: '#000', // Sombra ligera para el encabezado
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  greetingText: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
+  headerIconLeft: {
+    padding: 5,
+  },
+  headerIconRight: {
+    padding: 5,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#333',
   },
-  backButton: {
-    position: 'absolute',
-    top: 55, 
-    left: 20,
-    zIndex: 10,
-  },
-  settingsButton: {
-    position: 'absolute',
-    top: 55, 
-    right: 20, 
-    zIndex: 10,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50, 
-    borderColor: '#ffffff', // Borde blanco
-    borderWidth: 5,
-    alignSelf: 'center', 
-    marginTop: -50, // Lo sube para superponerlo con el encabezado
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 6,
-  },
-  content: {
+  scrollViewContent: {
     flex: 1,
-    alignItems: 'center',
-    paddingTop: 10,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
-  // --- Tarjeta de Balance (Nueva) ---
+  // --- Tarjeta de Balance ---
   balanceCard: {
-    width: '100%',
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
     padding: 25,
-    alignItems: 'center',
-    marginTop: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowRadius: 8,
+    elevation: 6,
   },
   balanceLabel: {
     fontSize: 16,
-    color: '#888',
+    color: '#777',
     marginBottom: 5,
   },
   balanceAmount: {
-    fontSize: 40,
+    fontSize: 38,
     fontWeight: '700',
-    color: '#B71C1C', // Rojo para el balance
+    color: '#2e86de', // Azul principal de la app
+    marginBottom: 20,
   },
-  // --- Botón Principal de Acción ---
-  mainButton: {
-    backgroundColor: '#10B981', // Verde Esmeralda
-    width: '100%',
-    paddingVertical: 18,
-    borderRadius: 12, 
-    marginTop: 30,
-    shadowColor: "#10B981",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 10,
+  balanceDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    paddingTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#F0F4F8',
   },
-  mainButtonText: {
-    fontSize: 18,
-    color: '#ffffff', 
-    fontWeight: '700',
-    textAlign: 'center',
+  balanceItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  // --- Acciones Rápidas ---
-  quickActionsContainer: {
-    width: '100%',
-    marginTop: 30,
-    padding: 10,
+  balanceItemText: {
+    fontSize: 14,
+    color: '#555',
+    marginLeft: 8,
+    fontWeight: '500',
   },
-  quickActionsTitle: {
+  // --- Secciones Generales ---
+  sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 15,
+    marginTop: 10,
   },
-  quickActionsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionItem: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 15,
-    width: '30%',
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 2,
+  // --- Transacciones ---
+  transactionsContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    marginBottom: 25,
+    paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
     elevation: 3,
   },
-  actionItemText: {
-    fontSize: 12,
-    marginTop: 8,
-    fontWeight: '600',
+  transactionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F7F9FC',
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F7F9FC',
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F7F9FC',
+    // Remove last item border for cleaner look
+    lastChild: {
+        borderBottomWidth: 0,
+    },
+  },
+  transactionIcon: {
+    marginRight: 15,
+  },
+  transactionDetails: {
+    flex: 1,
+  },
+  transactionName: {
+    fontSize: 16,
+    fontWeight: '500',
     color: '#333',
+  },
+  transactionCategory: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 2,
+  },
+  transactionAmount: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#E74C3C', // Rojo para egresos
+  },
+  // --- Acciones Rápidas ---
+  quickActionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 30, // Espacio al final de la pantalla
+  },
+  quickActionItem: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    width: '48%', // Dos columnas
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  quickActionText: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 10,
+    fontWeight: '500',
     textAlign: 'center',
   },
   // --- FAB ---
@@ -253,15 +302,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     right: 30,
-    width: 65,
-    height: 65,
-    borderRadius: 35,
-    backgroundColor: '#10B981', // Verde Esmeralda para acción principal
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#2e86de', // Azul principal de la app
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: "#000",
+    shadowColor: '#2e86de',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.45,
+    shadowOpacity: 0.4,
     shadowRadius: 10,
     elevation: 15,
   },
