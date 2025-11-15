@@ -5,6 +5,7 @@ import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { AppContext } from '../context/AppContext';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
