@@ -10,8 +10,18 @@ Aplicación móvil en desarrollo con Expo (React Native) para la gestión de ing
 Se creó el proyecto usando **Expo con plantilla blank-typescript**.
 Se organizaron las carpetas base (`components`, `screens`, `services`, `hooks`, `context`, `utils`).
 
-### 2. Primeros componentes
-Se implementó la pantalla **Login** aplicando:
+### 2. COMPONENTES
+- GRAFICO CIRCULAR
+propiedades: 
+- 
+-
+- 
+EVIDENCIA 
+
+### 3. SCREENS
+
+Se implementó la pantalla Login aplicando:
+
 - `useState` y `useEffect`
 - `Props`
 - `Custom Hook (useForm)`
@@ -21,15 +31,29 @@ Se implementó la pantalla **Login** aplicando:
 El usuario puede ingresar con cualquier correo y la contraseña **123456**.
 Se usa un contexto global para guardar el correo del usuario y mostrarlo en la pantalla Home.
 
-### 3. Próximos pasos
-- Implementar el registro y manejo de ingresos/egresos usando listas.
+
+
+
+### 3. Próximos tareas
+
+Andres Qiñonez 
+- Implementar el registro y manejo de ingresos/egresos usando listas 
 - Agregar componentes reutilizables (botones, inputs).
 - Crear servicios reales en `src/services/` para manejar la lógica de negocio.
 
+julio
+- a
+
+
+sebastian
+- a
+
+
+
 ### 4. Equipo
 - Andres Fernando Quiñonez Ruiz   
-- 
--
+- Sebastian 
+- Julio
 
 ### 5. Profesor
 - Víctor Pinto — *victorpinto@unimayor.edu.co*
