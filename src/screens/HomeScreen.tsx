@@ -5,13 +5,18 @@ import {
   StyleSheet, 
   TouchableOpacity, 
   StatusBar,
-  ScrollView, // Usamos ScrollView para permitir el desplazamiento si hay mucho contenido
+  ScrollView,
+  Button, // Usamos ScrollView para permitir el desplazamiento si hay mucho contenido
 } from 'react-native';
 import FeaturesScreen from './FeaturesScreen';
 import InitialScreen from './InitialScreen';
+import { RootStackParamList } from '../navigation/RootNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+// Definimos los parametros que llegan a la pantalla
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const HomeScreen = () => {
+export default function HomeScreen({ navigation }: Props) {
   // const handleGoBack = () => {
   //   navigation.goBack(); 
   // };
@@ -45,8 +50,6 @@ const HomeScreen = () => {
       </View>
 
       <ScrollView style={styles.scrollViewContent}>
-
-        <InitialScreen />
 
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Balance Actual</Text>
@@ -94,8 +97,10 @@ const HomeScreen = () => {
             <Text style={styles.quickActionText}>Tarjetas</Text>
           </TouchableOpacity>
         </View>
-
-        <FeaturesScreen/>
+        <Button
+          title="Ir a Pantalla inicial"
+          onPress={() => navigation.navigate('Initial')}
+          />
       </ScrollView>
 
       <TouchableOpacity style={styles.fab} onPress={handleAddTransaction}>
@@ -281,5 +286,3 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
 });
-
-export default HomeScreen;

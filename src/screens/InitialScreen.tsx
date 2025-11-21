@@ -1,6 +1,8 @@
 // src/screens/InitialScreen.tsx
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, Dimensions, Button } from 'react-native';
+import { RootStackParamList } from '../navigation/RootNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 // --- IMAGEN DE BIENVENIDA ---
 // Asegúrate de que esta ruta sea correcta para tu imagen.
@@ -9,7 +11,10 @@ const welcomeImage = require('../../assets/hom.png');
 
 const { height } = Dimensions.get('window');
 
-const InitialScreen = () => {
+// Definimos los parametros que llegan a la pantalla
+type Props = NativeStackScreenProps<RootStackParamList, 'Initial'>;
+
+export default function InitialScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       {/* Primer color del degradado (parte superior) */}
@@ -38,11 +43,15 @@ const InitialScreen = () => {
         <TouchableOpacity
           style={styles.primaryButton}
         >
-          <Text style={styles.primaryButtonText}>
+          <Text style={styles.primaryButtonText} onPress={() => navigation.navigate('Home')}>
             Empezar a Administrar
           </Text>
           {/* <Icon name="chevron-right" size={20} color="#FFFFFF" style={styles.buttonIcon} /> */}
         </TouchableOpacity>
+        <Button
+          title="Ir a Caracteristicas"
+          onPress={() => navigation.navigate('Features')}
+          />
       </View>
     </View>
   );
@@ -141,5 +150,3 @@ const styles = StyleSheet.create({
     // Estilo opcional para el ícono
   },
 });
-
-export default InitialScreen;

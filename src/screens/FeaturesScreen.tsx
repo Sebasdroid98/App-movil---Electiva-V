@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, Button } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import styles from './styles/FeaturesScreen';
 import useChartData from '../hooks/useChartData';
+import { RootStackParamList } from '../navigation/RootNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function FeaturesScreen() {
+// Definimos los parametros que llegan a la pantalla
+type Props = NativeStackScreenProps<RootStackParamList, 'Features'>;
+
+export default function FeaturesScreen({navigation}:Props) {
   const screenWidth = Dimensions.get('window').width;
   const { chartData } = useChartData(); 
 
@@ -42,6 +47,10 @@ export default function FeaturesScreen() {
       />
 
       <Text style={styles.footer}>Resultado actualizado en tiempo real.</Text>
+      <Button
+        title="Ir a Pantalla inicial"
+        onPress={() => navigation.navigate('Initial')}
+        />
     </View>
   );
 }
