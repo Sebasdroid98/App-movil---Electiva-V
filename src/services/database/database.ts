@@ -14,6 +14,7 @@ export const initDB = async () => {
       nombres TEXT NOT NULL,
       apellidos TEXT NOT NULL,
       correo TEXT NOT NULL,
+      password TEXT NOT NULL
       telefono TEXT,
       acepta_terminos INTEGER NOT NULL DEFAULT 0,
       fecha_registro TEXT DEFAULT CURRENT_TIMESTAMP,

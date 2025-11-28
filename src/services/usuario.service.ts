@@ -6,6 +6,7 @@ export const UsuarioService = {
     nombres: string;
     apellidos: string;
     correo: string;
+    clave: string;
     telefono?: string;
     acepta_terminos: number;
   }) {
@@ -13,14 +14,15 @@ export const UsuarioService = {
     return await db.runAsync(
       `
       INSERT INTO usuario 
-      (identificacion, nombres, apellidos, correo, telefono, acepta_terminos)
-      VALUES (?, ?, ?, ?, ?, ?)
+      (identificacion, nombres, apellidos, correo, clave, telefono, acepta_terminos)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
       `,
       [
         usuario.identificacion,
         usuario.nombres,
         usuario.apellidos,
         usuario.correo,
+        usuario.clave,
         usuario.telefono ?? null,
         usuario.acepta_terminos,
       ]
@@ -35,5 +37,34 @@ export const UsuarioService = {
   async obtenerPorId(id: number) {
     const db = getDB();
     return await db.getFirstAsync("SELECT * FROM usuario WHERE id = ?", [id]);
+  },
+
+  async actualizar(id: number, data: Partial<any>) {
+    const db = getDB();
+
+    const campos = Object.keys(data)
+      .map((key) => `${key} = ?`)
+      .join(", ");
+
+    const valores = Object.values(data);
+
+    return await db.runAsync(
+      `UPDATE usuario SET ${campos}, fecha_modificacion = CURRENT_TIMESTAMP WHERE id = ?`,
+      [...valores, id]
+    );
+  },
+
+  async eliminar(id: number) {
+    const db = getDB();
+    return await db.runAsync("DELETE FROM usuario WHERE id = ?", [id]);
+  },
+
+  async obtenerPorCorreo(correo: string) {
+    const db = getDB();
+    const result = await db.getFirstAsync(
+      "SELECT * FROM usuario WHERE correo = ? LIMIT 1",
+      [correo]
+    );
+    return result;
   },
 };

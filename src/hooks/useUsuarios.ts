@@ -8,6 +8,7 @@ export interface Usuario {
   nombres: string;
   apellidos: string;
   correo: string;
+  clave: string;
   telefono?: string;
   acepta_terminos: number;
   fecha_registro: string;
@@ -53,22 +54,22 @@ export const useUsuarios = () => {
   // ---------------------------------------------------------
   // Actualizar usuario
   // ---------------------------------------------------------
-//   const actualizarUsuario = useCallback(async (id: number, data: Partial<Usuario>) => {
-//     setLoading(true);
-//     await UsuarioService.actualizar(id, data);
-//     await cargarUsuarios();
-//     setLoading(false);
-//   }, [cargarUsuarios]);
+  const actualizarUsuario = useCallback(async (id: number, data: Partial<Usuario>) => {
+    setLoading(true);
+    await UsuarioService.actualizar(id, data);
+    await cargarUsuarios();
+    setLoading(false);
+  }, [cargarUsuarios]);
 
   // ---------------------------------------------------------
   // Eliminar usuario
   // ---------------------------------------------------------
-//   const eliminarUsuario = useCallback(async (id: number) => {
-//     setLoading(true);
-//     await UsuarioService.eliminar(id);
-//     await cargarUsuarios();
-//     setLoading(false);
-//   }, [cargarUsuarios]);
+  const eliminarUsuario = useCallback(async (id: number) => {
+    setLoading(true);
+    await UsuarioService.eliminar(id);
+    await cargarUsuarios();
+    setLoading(false);
+  }, [cargarUsuarios]);
 
   // ---------------------------------------------------------
   // Cargar de inicio
@@ -85,7 +86,7 @@ export const useUsuarios = () => {
     cargarUsuarios,
     cargarUsuario,
     crearUsuario,
-    // actualizarUsuario,
-    // eliminarUsuario,
+    actualizarUsuario,
+    eliminarUsuario,
   };
 };
