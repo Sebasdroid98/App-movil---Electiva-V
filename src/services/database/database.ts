@@ -50,25 +50,26 @@ export const initDB = async () => {
   `);
 
   // Ejecutar seeder
-  await seedDatabase();
+  await seedUsers();
+  await seedTipoTransaccion();
 
-  console.log("📦 Base de datos inicializada correctamente");
+  console.log("Base de datos inicializada correctamente");
 };
 
 export const getDB = () => db;
 
 /* ------------------------------------------------------------------ */
-/*                           SEEDER                                   */
+/*                           SEEDERS                                  */
 /* ------------------------------------------------------------------ */
 
-const seedDatabase = async () => {
+const seedUsers = async () => {
   // Verificar si ya existe un usuario
   const existingUser = await db.getFirstAsync(
     "SELECT id FROM usuario LIMIT 1"
   );
 
   if (existingUser) {
-    console.log("🌱 Seed: ya existe un usuario, no se insertará el de prueba");
+    console.log("Seed: ya existe un usuario, no se insertará el de prueba");
     return;
   }
 
@@ -90,5 +91,21 @@ const seedDatabase = async () => {
     ]
   );
 
-  console.log("🌱 Usuario de prueba insertado correctamente");
+  console.log("Usuario de prueba insertado correctamente");
+};
+
+const seedTipoTransaccion = async () => {
+  const tipoCount = await db.getFirstAsync<{ total: number }>(
+    "SELECT COUNT(*) as total FROM tipo_transaccion"
+  );
+
+  if (!tipoCount || tipoCount.total === 0) {
+    await db.runAsync(`
+      INSERT INTO tipo_transaccion (nombre) VALUES
+      ('Ingreso'),
+      ('Egreso');
+    `);
+
+    console.log("Seeder: tipos de transacción insertados");
+  }
 };

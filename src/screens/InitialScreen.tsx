@@ -1,8 +1,10 @@
 // src/screens/InitialScreen.tsx
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, Dimensions, Button } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Image, Dimensions, Button, FlatList } from 'react-native';
 import { RootStackParamList } from '../navigation/RootNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppContext } from '../context/AppContext';
+import { useUsuarios } from '../hooks/useUsuarios';
 
 // --- IMAGEN DE BIENVENIDA ---
 // Asegúrate de que esta ruta sea correcta para tu imagen.
@@ -15,6 +17,16 @@ const { height } = Dimensions.get('window');
 type Props = NativeStackScreenProps<RootStackParamList, 'Initial'>;
 
 export default function InitialScreen({navigation}: Props) {
+
+  // Se obtiene el usuario del contexto global
+  const { user } = useContext(AppContext);
+
+  const {usuarios, cargarUsuarios} = useUsuarios();
+
+  useEffect(() =>{
+    cargarUsuarios();
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* Primer color del degradado (parte superior) */}
@@ -38,6 +50,8 @@ export default function InitialScreen({navigation}: Props) {
         <Text style={styles.subtitle}>
           Tu aliado para una gestión financiera clara y sin esfuerzo.
         </Text>
+        <Text>Nombre: {user.nombres} {user.apellidos}</Text>
+        <Text>Correo: {user.correo}</Text>
 
         {/* --- Botón de Acción Principal --- */}
         <TouchableOpacity
@@ -52,6 +66,28 @@ export default function InitialScreen({navigation}: Props) {
           title="Ir a Caracteristicas"
           onPress={() => navigation.navigate('Features')}
           />
+
+        <Text style={styles.subtitle}>
+          Lista de usuarios registrados:
+        </Text>
+
+        <FlatList
+          data={usuarios}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                padding: 15,
+                backgroundColor: "#eee",
+                marginBottom: 10,
+                borderRadius: 10,
+              }}
+            >
+              <Text>Nombre: {item.nombres}</Text>
+              <Text>Correo: {item.correo}</Text>
+            </View>
+          )}
+        />
       </View>
     </View>
   );
