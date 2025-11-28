@@ -65,6 +65,6 @@ export const UsuarioService = {
       "SELECT * FROM usuario WHERE correo = ? LIMIT 1",
       [correo]
     );
-    return result;
+    return result ?? null;
   },
 };

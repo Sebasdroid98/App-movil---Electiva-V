@@ -1,22 +1,28 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useForm } from '../hooks/useForm';
 import { AppContext } from '../context/AppContext';
+import { useLoginUsuario } from '../hooks/useLoginUsuario';
 
 export default function LoginScreen() {
   const { values, handleChange } = useForm({ email: '', password: '' });
   const { login } = useContext(AppContext);
+    const { loginUsuario, loading } = useLoginUsuario();
 
   useEffect(() => {
     console.log('Pantalla Login cargada');
   }, []);
 
-  function handleLogin() {
-    if (values.password === '123456') {
-      login(values.email);
-    } else {
-      alert('Contraseña incorrecta (usa 123456)');
+  async function handleLogin() {
+    const result = await loginUsuario(values.email, values.password);
+
+    if (!result.ok) {
+      Alert.alert("Error", result.message);
+      return;
     }
+
+    // Guardar usuario en el contexto global
+    login(result.user);
   }
 
   return (
