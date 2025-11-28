@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import { AppContext, AppProvider } from './src/context/AppContext';
 import RootNavigator from './src/navigation/RootNavigator';
 import { initDB } from './src/services/database/database';
+import { AuthProvider } from './src/context/AuthContext';
 
 export default function App() {
   useEffect(() => {
@@ -14,8 +14,8 @@ export default function App() {
     })();
   }, []);
   return (
-    <AppProvider>
+    <AuthProvider>
       <RootNavigator />
-    </AppProvider>
+    </AuthProvider>
   );
 }

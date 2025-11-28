@@ -7,8 +7,7 @@ import InitialScreen from '../screens/InitialScreen';
 import HomeScreen from '../screens/HomeScreen';
 import AddTransactionScreen from '../screens/AddTransactionScreen';
 import HistoryScreen from '../screens/HistoryScreen';
-
-import { AppContext } from '../context/AppContext';
+import { AuthContext } from '../context/AuthContext';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -21,7 +20,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
-  const { user } = useContext(AppContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <NavigationContainer>

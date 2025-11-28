@@ -60,11 +60,17 @@ export const UsuarioService = {
   },
 
   async obtenerPorCorreo(correo: string) {
+    type User = {
+      id: number;
+      nombre: string;
+      correo: string;
+      clave: string;
+    };
+
     const db = getDB();
-    const result = await db.getFirstAsync(
+    return await db.getFirstAsync<User|null>(
       "SELECT * FROM usuario WHERE correo = ? LIMIT 1",
       [correo]
     );
-    return result ?? null;
   },
 };
