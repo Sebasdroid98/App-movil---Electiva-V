@@ -7,5 +7,5 @@ export function useForm(initialValues: any) {
     setValues({ ...values, [name]: value });
   }
 
-  return { values, handleChange };
+  return { values, handleChange, setValues };
 }

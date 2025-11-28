@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AppContext, AppProvider } from './src/context/AppContext';
+import React from 'react';
+import { AppProvider } from './src/context/AppContext';
 import RootNavigator from './src/navigation/RootNavigator';
 
 export default function App() {
@@ -9,4 +9,3 @@ export default function App() {
     </AppProvider>
   );
 }
-    
